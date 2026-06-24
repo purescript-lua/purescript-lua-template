@@ -1,19 +1,25 @@
+[private]
 default:
-  just --list
+    @just help
+
+# Show available commands
+help:
+    @just --list
 
 alias b := build
 
+# Compile PureScript to Lua (dist/main.lua) via the pslua backend
 build:
-  @spago build -u '-g corefn'
-  @pslua --foreign-path . --ps-output output --entry Main.main --lua-output-file dist/main.lua
+    spago build
 
 alias r := run
 
+# Build and run Main.main with lua
 run:
-  @lua -e 'package.path = package.path .. ";dist/?.lua"' dist/main.lua
+    spago run
 
 alias t := test
+
+# Build and run the test suite (Test.Main) with lua
 test:
-  @spago --config test.dhall build -u '-g corefn'
-  @pslua --foreign-path . --ps-output output --entry Test.Main.main --lua-output-file dist/test.lua
-  @lua dist/test.lua
+    spago test

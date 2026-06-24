@@ -1,0 +1,31 @@
+package:
+  name: my-project
+  dependencies:
+    - console
+    - effect
+    - prelude
+  test:
+    main: Test.Main
+    dependencies:
+      - console
+      - effect
+      - prelude
+workspace:
+  # The published purescript-lua package set (registry baseline with the Lua FFI
+  # forks overlaid). See https://github.com/purescript-lua/purescript-lua-package-sets
+  packageSet:
+    url: https://github.com/purescript-lua/purescript-lua-package-sets/releases/download/psc-0.15.15-20260624/packages.json
+  # pslua as a first-class backend: Spago emits CoreFn and then runs this command,
+  # which links the app to Lua. `spago run` / `spago test` additionally execute
+  # the entry point via `pslua --run` (see the pslua README).
+  backend:
+    cmd: pslua
+    args:
+      - --foreign-path
+      - .
+      - --ps-output
+      - output
+      - --lua-output-file
+      - dist/main.lua
+      - --entry
+      - Main.main
